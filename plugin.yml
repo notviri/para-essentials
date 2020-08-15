@@ -2,4 +2,9 @@ name: ParaEssentials
 main: moe.stuff.para.ParaEssentials
 version: 1.0
 api-version: 1.12
+
 commands:
+  kill:
+    description: Kill yourself (or if you're a server operator, others too).
+    usage: /<command> [target | target1... targetN]
+    permission: para.command.kill
