@@ -4,6 +4,10 @@ version: 1.0
 api-version: 1.12
 
 commands:
+  help:
+    description: Prints a nice help message.
+    usage: /<command>
+    permission: para.command.help
   kill:
     description: Kill yourself (or if you're a server operator, others too).
     usage: /<command> [target | target1... targetN]
