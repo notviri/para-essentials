@@ -1,0 +1,25 @@
+help:
+  ignore:
+    usage: /<command> <player>
+    desc: ignore player
+  ignorelist:
+    usage: /<command>
+    desc: shows ignored players
+  msg:
+    usage: /<command> <player> <message>
+    desc: pm player
+  r:
+    usage: /<command> <message>
+    desc: reply to your last pm
+  togglechat:
+    usage: /<command>
+    desc: turn chat on/off
+  toggledeathmsgs:
+    usage: /<command>
+    desc: toggle death messages
+  kill:
+    usage: /<command>
+    desc: kill yourself
+  tps:
+    usage: /<command>
+    desc: see server TPS
