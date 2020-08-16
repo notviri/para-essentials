@@ -23,3 +23,7 @@ help:
   tps:
     usage: /<command>
     desc: see server TPS
+message:
+  chat: §6NAME §f>> §r§7MSG
+  receive: §6From §eNAME§6: §fMSG
+  sent: §6To §eNAME§6: §7MSG
