@@ -1,6 +1,12 @@
 package moe.stuff.para;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,6 +26,7 @@ import moe.stuff.para.commands.CommandToggleDeathMessages;
 public class ParaEssentials extends JavaPlugin {
     public static final String USAGE = ChatColor.RED + "Usage: " + ChatColor.WHITE;
     static final String CONFIG_FILENAME = "config.yml";
+    static final String PLAYERDATA_FILENAME = "playerdata.file";
 
     public FileConfiguration config;
     public ConcurrentHashMap<String, String> msgPairs; // <receiver, sender>
@@ -39,6 +46,7 @@ public class ParaEssentials extends JavaPlugin {
         this.saveDefaultConfig();
         this.reloadConfig();
         this.setup(false);
+        this.loadPlayerdata();
     }
 
     @Override
@@ -83,6 +91,55 @@ public class ParaEssentials extends JavaPlugin {
     public void reloadConfig() {
         File configFile = new File(this.getDataFolder(), CONFIG_FILENAME);
         YamlConfiguration yamlConfig = YamlConfiguration.loadConfiguration(configFile);
+        if (yamlConfig == null) {
+            this.config = this.getConfig();
+            this.saveDefaultConfig();
+        }
         this.config = yamlConfig;
+    }
+
+    Object lock = new Object();
+    public void loadPlayerdata() {
+        synchronized (lock) {
+            try {
+                Path path = Paths.get(this.getDataFolder().getAbsolutePath(), PLAYERDATA_FILENAME);
+                byte[] data = Files.readAllBytes(path);
+                String string = new String(data, StandardCharsets.UTF_8);
+                ConcurrentHashMap<String, ChatSettings> settings = new ConcurrentHashMap<>();
+                String[] entries = string.split(Pattern.quote(","));
+                ChatSettings def = ChatSettings.getDefault();
+                for (String entry : entries) {
+                    if (entry.length() == 0) continue;
+                    ChatSettings.DecodeResult result = def.decode(entry);
+                    if (result.success) {
+                        settings.put(result.playerName, result.instance);
+                    }
+                }
+                this.chatSettings = settings;
+            } catch (Exception e) {
+                this.chatSettings = new ConcurrentHashMap<>();
+            }
+        }
+    }
+    public void savePlayerdata() {
+        synchronized (lock) {
+            Path path = Paths.get(this.getDataFolder().getAbsolutePath(), PLAYERDATA_FILENAME);
+            try {
+                StringBuilder sb = new StringBuilder();
+                for (Map.Entry<String, ChatSettings> entry : this.chatSettings.entrySet()) {
+                    String playerName = entry.getKey();
+                    ChatSettings settings = entry.getValue();
+                    synchronized (settings) {
+                        sb.append(settings.encode(playerName));
+                    }
+                    sb.append(',');
+                }
+                String string = sb.toString();
+                Files.write(path, string.getBytes(StandardCharsets.UTF_8));
+            } catch (Exception e) {
+                System.err.println("Failed to write playerdata file.");
+                e.printStackTrace();
+            }
+        }
     }
 }

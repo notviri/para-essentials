@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import moe.stuff.para.ChatSettings;
 import moe.stuff.para.ParaEssentials;
 
-public class CommandToggleDeathMessages implements CommandExecutor  {
+public class CommandToggleDeathMessages implements CommandExecutor {
     ParaEssentials pluginInstance;
 
     public CommandToggleDeathMessages(ParaEssentials pluginInstance) {
@@ -34,6 +34,7 @@ public class CommandToggleDeathMessages implements CommandExecutor  {
                     player.sendMessage(ChatColor.RED + "Death messages disabled!");
                 }
             }
+            this.pluginInstance.savePlayerdata();
         } else {
             sender.sendMessage(ChatColor.RED + "You're not a player.");
         }

@@ -34,6 +34,7 @@ public class CommandToggleChat implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Chat disabled! :(");
                 }
             }
+            this.pluginInstance.savePlayerdata();
         } else {
             sender.sendMessage(ChatColor.RED + "You're not a player.");
         }

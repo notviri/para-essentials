@@ -43,14 +43,19 @@ public class ChatSettings {
     public DecodeResult decode(String encoded) {
         ChatSettings instance = new ChatSettings(false, false, null);
         String[] split = encoded.split(Pattern.quote(SEPARATOR));
-        if (split.length != 4) {
+        if (split.length == 3 || split.length == 4) {
+            String playerName = split[0];
+            instance.chatDisabled = Boolean.valueOf(split[1]);
+            instance.deathMessagesDisabled = Boolean.valueOf(split[2]);
+            if (split.length == 4) {
+                instance.ignoredPlayers = new HashSet<>(Arrays.asList(split[3].split(Pattern.quote(SEPARATOR2))));
+            } else {
+                instance.ignoredPlayers = new HashSet<>();
+            }
+            return new DecodeResult(true, instance, playerName);
+        } else {
             return new DecodeResult(false, null, null);
         }
-        String playerName = split[0];
-        instance.chatDisabled = Boolean.getBoolean(split[1]);
-        instance.deathMessagesDisabled = Boolean.getBoolean(split[2]);
-        instance.ignoredPlayers = new HashSet<>(Arrays.asList(split[3].split(Pattern.quote(SEPARATOR2))));
-        return new DecodeResult(true, instance, playerName);
     }
 
     public boolean isChatDisabled() {
