@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import moe.stuff.para.commands.CommandHelp;
@@ -43,6 +44,8 @@ public class ParaEssentials extends JavaPlugin {
     public void setup(boolean isReload) {
         if (!isReload) {
             this.msgPairs = new HashMap<>();
+        } else {
+            HandlerList.unregisterAll(this);
         }
 
         this.commandHelp = new CommandHelp(this);
@@ -54,6 +57,8 @@ public class ParaEssentials extends JavaPlugin {
         this.getCommand("msg").setExecutor(this.commandMessage);
         this.getCommand("kill").setExecutor(this.commandKill);
         this.getCommand("r").setExecutor(this.commandReply);
+
+        this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
     }
 
     @Override
