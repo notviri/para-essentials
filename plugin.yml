@@ -31,6 +31,11 @@ commands:
     description: Toggles chat.
     usage: /<command>
     permission: para.command.togglechat
+  toggledeathmsgs:
+    description: Toggles death messages.
+    usage: /<command>
+    permission: para.command.toggledeathmsgs
+    aliases: [toggledeathmessages]
   kill:
     description: Kill yourself (or if you're a server operator, others too).
     usage: /<command> [target | target1... targetN]
