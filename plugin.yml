@@ -27,6 +27,10 @@ commands:
     usage: /<command> <message>
     permission: para.command.r
     aliases: [reply]
+  togglechat:
+    description: Toggles chat.
+    usage: /<command>
+    permission: para.command.togglechat
   kill:
     description: Kill yourself (or if you're a server operator, others too).
     usage: /<command> [target | target1... targetN]

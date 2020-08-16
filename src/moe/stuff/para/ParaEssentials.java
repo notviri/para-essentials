@@ -14,6 +14,7 @@ import moe.stuff.para.commands.CommandIgnoreList;
 import moe.stuff.para.commands.CommandKill;
 import moe.stuff.para.commands.CommandMessage;
 import moe.stuff.para.commands.CommandReply;
+import moe.stuff.para.commands.CommandToggleChat;
 
 public class ParaEssentials extends JavaPlugin {
     public static final String USAGE = ChatColor.RED + "Usage: " + ChatColor.WHITE;
@@ -29,6 +30,7 @@ public class ParaEssentials extends JavaPlugin {
     public CommandKill commandKill;
     public CommandMessage commandMessage;
     public CommandReply commandReply;
+    public CommandToggleChat commandToggleChat;
 
     @Override
     public void onEnable() {
@@ -60,6 +62,7 @@ public class ParaEssentials extends JavaPlugin {
         this.commandKill = new CommandKill(this);
         this.commandMessage = new CommandMessage(this);
         this.commandReply = new CommandReply(this);
+        this.commandToggleChat = new CommandToggleChat(this);
 
         this.getCommand("help").setExecutor(this.commandHelp);
         this.getCommand("ignore").setExecutor(this.commandIgnore);
@@ -67,6 +70,7 @@ public class ParaEssentials extends JavaPlugin {
         this.getCommand("msg").setExecutor(this.commandMessage);
         this.getCommand("kill").setExecutor(this.commandKill);
         this.getCommand("r").setExecutor(this.commandReply);
+        this.getCommand("togglechat").setExecutor(this.commandToggleChat);
 
         this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
     }

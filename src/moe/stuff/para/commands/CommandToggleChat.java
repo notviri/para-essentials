@@ -11,10 +11,10 @@ import org.bukkit.entity.Player;
 import moe.stuff.para.ChatSettings;
 import moe.stuff.para.ParaEssentials;
 
-public class CommandIgnoreList implements CommandExecutor {
+public class CommandToggleChat implements CommandExecutor {
     ParaEssentials pluginInstance;
 
-    public CommandIgnoreList(ParaEssentials pluginInstance) {
+    public CommandToggleChat(ParaEssentials pluginInstance) {
         this.pluginInstance = pluginInstance;
     }
 
@@ -23,17 +23,15 @@ public class CommandIgnoreList implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player)sender;
             ConcurrentHashMap<String, ChatSettings> chatSettings = this.pluginInstance.chatSettings;
+            chatSettings.putIfAbsent(player.getName(), ChatSettings.getDefault());
             ChatSettings settings = chatSettings.get(player.getName());
-            if (settings == null) {
-                player.sendMessage(ChatColor.GREEN + "You haven't ignored anybody!");
-                return true;
-            }
             synchronized (settings) {
-                if (!settings.getIgnoredPlayers().isEmpty()) {
-                    String msg = ChatColor.BLUE + "Ignored players: ";
-                    player.sendMessage(msg + String.join(", ", settings.getIgnoredPlayers()));
+                if (settings.isChatDisabled()) {
+                    settings.setChatDisabled(false);
+                    player.sendMessage(ChatColor.GREEN + "Chat enabled! :)");
                 } else {
-                    player.sendMessage(ChatColor.GREEN + "You aren't ignoring anybody!");
+                    settings.setChatDisabled(true);
+                    player.sendMessage(ChatColor.RED + "Chat disabled! :(");
                 }
             }
         } else {
