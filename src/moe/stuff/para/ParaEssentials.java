@@ -19,6 +19,7 @@ public class ParaEssentials extends JavaPlugin {
 
     public FileConfiguration config;
     public HashMap<String, String> msgPairs; // <receiver, sender>
+    public HashMap<String, ChatSettings> chatSettings; // <player, settings>
 
     public CommandHelp commandHelp;
     public CommandKill commandKill;
