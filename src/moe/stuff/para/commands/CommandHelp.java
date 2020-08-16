@@ -2,6 +2,7 @@ package moe.stuff.para.commands;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
@@ -12,11 +13,20 @@ import org.bukkit.command.CommandSender;
 import moe.stuff.para.ParaEssentials;
 
 public class CommandHelp implements CommandExecutor {
-    class CommandInfo {
+    public class CommandInfo {
         String usage, desc;
+
+        public String getUsage() {
+            return usage;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
     }
 
     ParaEssentials pluginInstance;
+    SortedMap<String, CommandInfo> help;
     String[] helpMessage;
 
     public CommandHelp(ParaEssentials pluginInstance) {
@@ -48,6 +58,11 @@ public class CommandHelp implements CommandExecutor {
         }
         helpMessage.add(separator);
         this.helpMessage = helpMessage.toArray(new String[helpMessage.size()]);
+        this.help = commandInfo;
+    }
+
+    public SortedMap<String, CommandInfo> getHelp() {
+        return this.help;
     }
 
     @Override

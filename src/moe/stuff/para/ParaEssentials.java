@@ -1,19 +1,26 @@
 package moe.stuff.para;
 import java.io.File;
+import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import moe.stuff.para.commands.CommandHelp;
 import moe.stuff.para.commands.CommandKill;
+import moe.stuff.para.commands.CommandMessage;
 
 public class ParaEssentials extends JavaPlugin {
+    public static final String USAGE = ChatColor.RED + "Usage: " + ChatColor.WHITE;
     static final String CONFIG_FILENAME = "config.yml";
 
     public FileConfiguration config;
+    public HashMap<String, String> msgPairs; // <receiver, sender>
 
-    CommandKill commandKill;
+    public CommandHelp commandHelp;
+    public CommandKill commandKill;
+    public CommandMessage commandMessage;
 
     @Override
     public void onEnable() {
@@ -27,9 +34,22 @@ public class ParaEssentials extends JavaPlugin {
         // TODO
     }
 
-    public void setup(boolean reload) {
-        this.getCommand("help").setExecutor(new CommandHelp(this));
-        this.getCommand("kill").setExecutor(new CommandKill(this));
+    public CommandHelp.CommandInfo getHelp(String command) {
+        return this.commandHelp.getHelp().get(command);
+    }
+
+    public void setup(boolean isReload) {
+        if (!isReload) {
+            this.msgPairs = new HashMap<>();
+        }
+
+        this.commandHelp = new CommandHelp(this);
+        this.commandKill = new CommandKill(this);
+        this.commandMessage = new CommandMessage(this);
+
+        this.getCommand("help").setExecutor(this.commandHelp);
+        this.getCommand("msg").setExecutor(this.commandMessage);
+        this.getCommand("kill").setExecutor(this.commandKill);
     }
 
     @Override

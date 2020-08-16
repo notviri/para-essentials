@@ -8,6 +8,16 @@ commands:
     description: Prints a nice help message.
     usage: /<command>
     permission: para.command.help
+  msg:
+    description: Message another player.
+    usage: /<command> <player> <message>
+    permission: para.command.msg
+    aliases: [message, m]
+  r:
+    description: Reply to the last /msg.
+    usage: /<command> <message>
+    permission: para.command.r
+    aliases: [reply]
   kill:
     description: Kill yourself (or if you're a server operator, others too).
     usage: /<command> [target | target1... targetN]
