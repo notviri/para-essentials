@@ -1,5 +1,10 @@
 package moe.stuff.para;
 
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,5 +22,23 @@ public class ChatListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         event.setFormat(this.chatFormat);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void filterChat(AsyncPlayerChatEvent event) {
+        ConcurrentHashMap<String, ChatSettings> chatSettings = this.pluginInstance.chatSettings;
+        Set<Player> recipients = event.getRecipients();
+        String playerName = event.getPlayer().getName();
+        Iterator<Player> iter = recipients.iterator();
+        while (iter.hasNext()) {
+            Player target = iter.next();
+            ChatSettings settings = chatSettings.get(target.getName());
+            if (settings == null) continue;
+            synchronized (settings) {
+                if (settings.isChatDisabled() || settings.getIgnoredPlayers().contains(playerName)) {
+                    iter.remove();
+                }
+            }
+        }
     }
 }

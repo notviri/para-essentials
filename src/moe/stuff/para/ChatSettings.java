@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class ChatSettings {
     public static final String SEPARATOR = "-";
-    static final String SEPARATOR2 = "|";
+    public static final String SEPARATOR2 = "|";
 
     public class DecodeResult {
         public boolean success;
@@ -27,6 +27,10 @@ public class ChatSettings {
         this.chatDisabled = chatDisabled;
         this.deathMessagesDisabled = deathMessagesDisabled;
         this.ignoredPlayers = ignoredPlayers;
+    }
+
+    public static ChatSettings getDefault() {
+        return new ChatSettings(false, false, new HashSet<>());
     }
 
     public String encode(String playerName) {

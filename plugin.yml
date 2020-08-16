@@ -8,6 +8,15 @@ commands:
     description: Prints a nice help message.
     usage: /<command>
     permission: para.command.help
+  ignore:
+    description: Ignore another player in chat.
+    usage: /<command> <player>
+    permission: para.command.ignore
+  ignorelist:
+    description: Retreive ignored players.
+    usage: /<command>
+    permission: para.command.ignorelist
+    aliases: [il]
   msg:
     description: Message another player.
     usage: /<command> <player> <message>
