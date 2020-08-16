@@ -3,6 +3,7 @@ package moe.stuff.para.commands;
 import static moe.stuff.para.ParaEssentials.USAGE;
 
 import java.util.Arrays;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,7 +31,12 @@ public class CommandMessage implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 2) {
-            String msg = USAGE + this.pluginInstance.getHelp("msg").getUsage();
+            String msg = USAGE;
+            if (!label.startsWith("r")) {
+                msg += this.pluginInstance.getHelp("msg").getUsage();
+            } else {
+                msg += this.pluginInstance.getHelp("r").getUsage();
+            }
             sender.sendMessage(msg);
             return true;
         }
@@ -46,6 +52,9 @@ public class CommandMessage implements CommandExecutor {
             String message = String.join(" ", messageWords);
             sender.sendMessage(String.format(this.formatTo, target.getName(), message));
             target.sendMessage(String.format(this.formatFrom, senderDisplayName, message));
+
+            String log = "PM [" + senderDisplayName + " -> " + target.getName() + "]:" + message;
+            Bukkit.getLogger().log(Level.INFO, log);
         } else {
             String msg = ChatColor.RED + "Player " + ChatColor.GOLD + args[0] + ChatColor.RED + " isn't online.";
             sender.sendMessage(msg);

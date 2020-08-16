@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import moe.stuff.para.commands.CommandHelp;
 import moe.stuff.para.commands.CommandKill;
 import moe.stuff.para.commands.CommandMessage;
+import moe.stuff.para.commands.CommandReply;
 
 public class ParaEssentials extends JavaPlugin {
     public static final String USAGE = ChatColor.RED + "Usage: " + ChatColor.WHITE;
@@ -21,6 +22,7 @@ public class ParaEssentials extends JavaPlugin {
     public CommandHelp commandHelp;
     public CommandKill commandKill;
     public CommandMessage commandMessage;
+    public CommandReply commandReply;
 
     @Override
     public void onEnable() {
@@ -46,10 +48,12 @@ public class ParaEssentials extends JavaPlugin {
         this.commandHelp = new CommandHelp(this);
         this.commandKill = new CommandKill(this);
         this.commandMessage = new CommandMessage(this);
+        this.commandReply = new CommandReply(this);
 
         this.getCommand("help").setExecutor(this.commandHelp);
         this.getCommand("msg").setExecutor(this.commandMessage);
         this.getCommand("kill").setExecutor(this.commandKill);
+        this.getCommand("r").setExecutor(this.commandReply);
     }
 
     @Override
